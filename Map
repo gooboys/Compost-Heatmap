@@ -1,8 +1,21 @@
-import pandas as pd
-import geopandas as gpd
-import folium
-import branca.colormap as cm
 
-fname = 'https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/new-york-counties.geojson'
-nil = gpd.read_file(fname)
-nil.head()
+# Load online dataset 
+online_dataset_path = 'https://public.opendatasoft.com/explore/dataset/covid-19-pandemic-worldwide-data/download/?format=csv&timezone=Europe/Berlin&lang=fr&use_labels_for_header=true&csv_separator=%3B'
+df = pd.read_csv(online_dataset_path, sep=';')
+
+# Columns renaming
+df.columns = [col.lower() for col in df.columns]
+
+# Filtering
+df = df[df['date']=='2020-11-19'].drop('date', axis=1)
+df = df[df['category']=='Confirmed'].drop('category', axis=1)
+
+# Droping unnecessary colunms
+df = df[['zone', 'count']]
+
+# Aggregating by Zone
+df = df.groupby('zone').sum()
+df = df.reset_index(drop=False)
+
+# Displaying result
+df.head()
