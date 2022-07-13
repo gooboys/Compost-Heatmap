@@ -1,0 +1,8 @@
+import pandas as pd
+import geopandas as gpd
+import folium
+import branca.colormap as cm
+
+fname = 'https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/new-york-counties.geojson'
+nil = gpd.read_file(fname)
+nil.head()
